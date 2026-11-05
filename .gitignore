@@ -1,0 +1,42 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Frontend
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Local databases
+*.db
+*.sqlite3
+
+# Project documentation and temporary test files
+*_synopsis*
+mosam_ai_*synopsis*
+mosam_ai_clean_test.pdf
+mosam_ai_no_breaks.pdf
+mosam_ai_tuned.pdf
+test_*.html

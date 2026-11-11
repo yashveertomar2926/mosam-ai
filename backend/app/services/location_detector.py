@@ -24,10 +24,7 @@ def extract_city_candidate(query: str) -> Tuple[Optional[str], bool]:
     """
     q_lower = query.lower().strip()
 
-    # Check GPS keywords first
-    for kw in GPS_KEYWORDS:
-        if re.search(rf"\b{re.escape(kw)}\b", q_lower):
-            return None, True
+    
 
     q_clean = re.sub(r"[?!.,]", " ", query).strip()
 
@@ -81,7 +78,13 @@ def extract_city_candidate(query: str) -> Tuple[Optional[str], bool]:
         if re.search(rf"\b{re.escape(c_name)}\b", q_lower):
             return pc["name"], False
 
+    # Check GPS keywords only after checking for an explicit city
+    for kw in GPS_KEYWORDS:
+        if re.search(rf"\b{re.escape(kw)}\b", q_lower):
+            return None, True
+
     return None, False
+
 
 async def detect_target_location(
     query: str,

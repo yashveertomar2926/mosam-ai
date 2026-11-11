@@ -117,7 +117,7 @@ export default function FullscreenChatPage() {
           const lon = pos.coords.longitude;
           const loc = await reverseGeocode(lat, lon);
           setSelectedLocation(loc);
-          handleSend(`What is the weather right here in ${loc.name}?`);
+          handleSend(`What is the weather right here in ${loc.name}?`, loc);
         } catch (e) {
           console.error("GPS lookup failed", e);
         } finally {
@@ -132,7 +132,7 @@ export default function FullscreenChatPage() {
     );
   };
 
-  const handleSend = async (textToSend?: string) => {
+  const handleSend = async (textToSend?: string, locationOverride?: typeof selectedLocation) => {
     const text = (textToSend || inputValue).trim();
     if (!text || isSending) return;
 
@@ -169,7 +169,7 @@ export default function FullscreenChatPage() {
 
       const res = await sendChatMessage(
         text,
-        selectedLocation,
+        locationOverride || selectedLocation,
         weatherData,
         language,
         history
@@ -189,9 +189,7 @@ export default function FullscreenChatPage() {
 
       addChatMessage(botMsg);
 
-      if (res.requestedGps && !isLocatingGps) {
-        handleGpsClick();
-      }
+
     } catch (err) {
       console.error("Chat send failed", err);
       addChatMessage({
@@ -445,11 +443,10 @@ export default function FullscreenChatPage() {
                     startListening();
                   }
                 }}
-                className={`p-3 rounded-xl border transition-all ${
-                  isListening
-                    ? "bg-rose-500 text-white border-rose-600 animate-pulse"
-                    : "border-slate-200 text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`p-3 rounded-xl border transition-all ${isListening
+                  ? "bg-rose-500 text-white border-rose-600 animate-pulse"
+                  : "border-slate-200 text-slate-600 hover:bg-slate-100"
+                  }`}
                 title={isListening ? "Stop Listening" : "Voice Input (Web Speech)"}
               >
                 {isListening ? (
